@@ -11,7 +11,9 @@ module.exports = {
       if (user && comparePassword(req.body.password, user.password)) {
         const token = generateToken({
           id: user._id,
-          email: user.email
+          email: user.email,
+          phoneNumber: req.body.phoneNumber,
+          address: req.body.address
         })
         res.status(200).json({ token })
       } else {
@@ -27,11 +29,15 @@ module.exports = {
     try {
       const user = await User.create({
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        phoneNumber: req.body.phoneNumber,
+        address: req.body.address
       })
       const token = generateToken({
         id: user._id,
-        email: user.email
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        address: user.address
       })
       res.status(201).json({ token })
     } catch (err) {

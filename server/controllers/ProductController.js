@@ -75,6 +75,7 @@ module.exports = {
       const deleted = await Product.deleteOne({
         _id: req.params.productId
       })
+      res.status(200).json({ message: 'Product deleted successfully' })
     } catch (err) {
       next(err)
     }

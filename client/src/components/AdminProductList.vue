@@ -49,7 +49,7 @@ export default {
         onOk: () => {
           this.isLoading = true
           this.$store
-            .dispatch('products/destroy', 'asdfasdf')
+            .dispatch('products/destroy', id)
             .then(res => {
               this.isLoading = false
               this.$message.success('Product deleted successfully', 3)

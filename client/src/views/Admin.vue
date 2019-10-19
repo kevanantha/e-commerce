@@ -71,9 +71,7 @@ export default {
     })
   },
   mounted() {
-    setTimeout(() => {
-      this.findAllProducts()
-    }, 5000)
+    this.findAllProducts()
   }
 }
 </script>

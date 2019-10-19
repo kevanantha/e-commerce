@@ -1,21 +1,45 @@
 <template>
   <div>
-    <div v-if="products.isLoading">loading...</div>
-    <div>{{ products }}</div>
+    <Loading v-if="products.isLoading" tip="Loading Products..." />
+    <a-list
+      :grid="{ gutter: 12, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }"
+      :dataSource="products.products"
+    >
+      <a-list-item slot="renderItem" slot-scope="product, index">
+        <a-card hoverable style="width: 300px">
+          <img style="height: 200px" :alt="product.name" :src="product.image" slot="cover" />
+          <template class="ant-card-actions" slot="actions">
+            <a-icon type="setting" />
+            <!-- <a-icon type="edit" /> -->
+            <!-- <a-icon @click="deleteProduct(product._id)" type="delete" /> -->
+          </template>
+          <a-card-meta :title="product.name" :description="product.description"> </a-card-meta>
+        </a-card>
+      </a-list-item>
+    </a-list>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import Loading from '@/components/Loading'
 
 export default {
-  name: 'ProductList',
-  methods: {
-    ...mapActions('products', { findAllProducts: 'findAll' })
+  name: 'AddProductList',
+  components: {
+    Loading
+  },
+  data() {
+    return {
+      isLoading: false
+    }
   },
   computed: {
-    ...mapState({
-      products: ['products']
+    ...mapState('products', ['products'])
+  },
+  methods: {
+    ...mapActions('products', {
+      findAllProducts: 'findAll'
     })
   },
   mounted() {
@@ -23,3 +47,4 @@ export default {
   }
 }
 </script>
+<style></style>

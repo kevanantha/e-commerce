@@ -16,8 +16,18 @@
             <router-link to="/about">Cart</router-link>
           </a-menu-item>
           <a-menu-item key="3">nav 3</a-menu-item>
-          <a-menu-item class="right-menu" key="4">Sign up</a-menu-item>
-          <a-menu-item @click="showDrawer" class="right-menu" key="5">Login</a-menu-item>
+          <a-menu-item v-if="isLogin" @click="logout" class="right-menu" key="6"
+            >Logout</a-menu-item
+          >
+          <a-menu-item v-if="isLogin" class="right-menu" key="7">
+            <a-icon type="shopping-cart" />
+          </a-menu-item>
+          <a-menu-item v-if="!isLogin" @click="showDrawerSignup" class="right-menu" key="4"
+            >Sign up</a-menu-item
+          >
+          <a-menu-item v-if="!isLogin" @click="showDrawer" class="right-menu" key="5">
+            Login
+          </a-menu-item>
         </a-menu>
       </a-layout-header>
       <a-layout-content style="padding: 0 50px">
@@ -30,6 +40,7 @@
         <router-view />
       </a-layout-content>
       <LoginForm :visible="visible" :onClose="onClose" />
+      <SignupForm :visible="visibleSignup" :onClose="onClose" />
       <a-layout-footer style="text-align: center">
         Ant Design ©2018 Created by Ant UED
       </a-layout-footer>
@@ -40,28 +51,44 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import LoginForm from '@/components/LoginForm'
+import SignupForm from '@/components/SignupForm'
+import { mapState } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     Breadcrumb,
-    LoginForm
+    LoginForm,
+    SignupForm
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      visibleSignup: false
     }
   },
+  computed: {
+    ...mapState('users', ['isLogin'])
+  },
   methods: {
-    login() {
-      console.log('asdf')
-    },
     showDrawer() {
       this.visible = true
     },
+    showDrawerSignup() {
+      this.visibleSignup = true
+    },
     onClose() {
       this.visible = false
+      this.visibleSignup = false
+    },
+    logout() {
+      this.$store.dispatch('users/logout')
+      this.$store.commit('users/isLogin')
+      this.$message.success('Logged out successfully', 3)
     }
+  },
+  mounted() {
+    this.$store.commit('users/isLogin')
   }
 }
 </script>

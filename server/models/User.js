@@ -23,13 +23,13 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, 'Password is required'],
-      minlength: [6, 'Minimal characters is 6']
+      minlength: [6, 'Password minimal characters is 6']
     },
     phoneNumber: {
       type: String,
       default: ''
-      // maxlength: [12, 'Maximal characters is 12'],
-      // minlength: [10, 'Minimal characters is 10']
+      // maxlength: [12, 'Phone Number maximal characters is 12'],
+      // minlength: [10, 'Phone Number Minimal characters is 10']
     },
     address: {
       type: String,

@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="Login"
+    title="Create an account"
     :width="720"
     @close="onClose"
     :visible="visible"
@@ -42,8 +42,18 @@
         </a-input>
       </a-form-item>
       <a-form-item>
+        <a-input v-decorator="['phoneNumber']" type="number" placeholder="Phone Number">
+          <a-icon slot="prefix" type="phone" style="color: rgba(0,0,0,.25)" />
+        </a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-input v-decorator="['address']" type="text" placeholder="Address">
+          <a-icon slot="prefix" type="home" style="color: rgba(0,0,0,.25)" />
+        </a-input>
+      </a-form-item>
+      <a-form-item>
         <a-button :loading="loadingBtn" type="primary" html-type="submit" class="login-form-button">
-          Log in
+          Create an account
         </a-button>
       </a-form-item>
     </a-form>
@@ -55,8 +65,11 @@ import { mapActions } from 'vuex'
 import Alert from '@/components/Alert'
 
 export default {
-  name: 'LoginForm',
+  name: 'SignupForm',
   props: ['visible', 'onClose'],
+  components: {
+    Alert
+  },
   data() {
     return {
       loadingBtn: false,
@@ -75,8 +88,8 @@ export default {
           this.error = {}
           this.loadingBtn = true
           this.$store
-            .dispatch('users/login', values)
-            .then(_ => {
+            .dispatch('users/register', values)
+            .then(() => {
               this.loadingBtn = false
               this.form.resetFields()
               this.$message.success('Logged in successfully', 3)
@@ -85,13 +98,12 @@ export default {
             .catch(err => {
               this.loadingBtn = false
               this.form.resetFields()
-              this.$message.error(err.response.data, 3)
-
               this.error = {
                 message: 'Error',
                 description: err.response.data,
                 type: 'error'
               }
+              //this.$message.error(err.response.data, 3)
             })
         }
       })
