@@ -33,6 +33,6 @@ app.use(express.json())
 app.use('/', routes)
 app.use(errorHandler)
 
-app.listen(PORT, () => console.log(`Server runs on PORT ${PORT}`))
+app.listen(PORT, _ => console.log(`Server runs on PORT ${PORT}`))
 
 module.exports = app

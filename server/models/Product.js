@@ -29,7 +29,7 @@ const productSchema = new Schema(
       required: [true, 'Description is required']
     }
   },
-  { versionKey: false, timestamps: true, createIndexs: true }
+  { versionKey: false, timestamps: true }
 )
 
 const Product = model('Product', productSchema)

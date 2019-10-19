@@ -1,5 +1,6 @@
 const chai = require('chai')
 const chaiHttp = require('chai-http')
+const fs = require('fs')
 
 const app = require('../app')
 const User = require('../models/User')
@@ -25,9 +26,9 @@ before('get JWT Token', function(done) {
     })
 })
 
-after('delete all', function() {
-  return Product.deleteMany({})
-})
+// after('delete all', function() {
+//   return Product.deleteMany({})
+// })
 
 describe('Products', function() {
   describe('/proudcts', function() {
@@ -77,20 +78,27 @@ describe('Products', function() {
     describe('Correct Data Params', function() {
       describe('[ CREATE ] Should return created product object', function() {
         it('[ CREATE ] Should return created product object', function(done) {
-          const product = {
-            name: 'product1',
-            price: '15000',
-            stock: 10,
-            categories: ['a', 's', 'd', 'f'],
-            image: 'ini image url',
-            description: 'lorem ipsum'
-          }
+          // const product = {
+          //   name: 'product1',
+          //   price: '15000',
+          //   stock: 10,
+          //   categories: ['a', 's', 'd', 'f'],
+          //   // image: 'ini image url',
+          //   description: 'lorem ipsum'
+          // }
           const headers = { access_token: token }
+          console.log('***********************************')
+          console.log(fs.readFileSync('./test/example.jpg'))
           chai
             .request(app)
             .post('/products/create')
             .set(headers)
-            .send(product)
+            .attach('image', fs.readFileSync('./test/example.jpg'), 'example.jpg')
+            .field('name', 'product1')
+            .field('price', '1500000')
+            .field('stock', 100)
+            .field('categories', ['a', 's', 'd', 'f'])
+            .field('description', 'lorem ipsum')
             .end(function(err, res) {
               expect(res.status).to.equal(201)
               expect(res.body).to.haveOwnProperty('_id')
@@ -114,7 +122,7 @@ describe('Products', function() {
                 .that.to.be.a('string')
               done()
             })
-        })
+        }).timeout(30000)
       })
     })
 

@@ -102,7 +102,7 @@ describe('Auth User', function() {
         it('Should throw error invalid email', function(done) {
           const body = {
             email: 'kev',
-            password: '123'
+            password: '123123'
           }
           chai
             .request(app)
