@@ -18,7 +18,6 @@ const actions = {
   create({ commit }, payload) {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(payload)
         const { data: product } = await api({
           method: 'post',
           url: '/products/create',
