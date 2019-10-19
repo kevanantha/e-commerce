@@ -1,30 +1,69 @@
 <template>
-  <a-list
-    :grid="{ gutter: 12, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }"
-    :dataSource="products.products"
-  >
-    <a-list-item slot="renderItem" slot-scope="product, index">
-      <a-card hoverable style="width: 300px">
-        <img :alt="product.name" :src="product.image" slot="cover" />
-        <template class="ant-card-actions" slot="actions">
-          <a-icon type="setting" />
-          <a-icon type="edit" />
-          <a-icon type="ellipsis" />
-        </template>
-        <a-card-meta :title="product.name" :description="product.description"> </a-card-meta>
-      </a-card>
-    </a-list-item>
-  </a-list>
+  <div>
+    <Loading v-if="isLoading" tip="Deleting product..." />
+    <a-list
+      :grid="{ gutter: 12, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }"
+      :dataSource="products.products"
+    >
+      <a-list-item slot="renderItem" slot-scope="product, index">
+        <a-card hoverable style="width: 300px">
+          <img style="height: 200px" :alt="product.name" :src="product.image" slot="cover" />
+          <template class="ant-card-actions" slot="actions">
+            <a-icon type="setting" />
+            <a-icon type="edit" />
+            <a-icon @click="deleteProduct(product._id)" type="delete" />
+          </template>
+          <a-card-meta :title="product.name" :description="product.description"> </a-card-meta>
+        </a-card>
+      </a-list-item>
+    </a-list>
+  </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import Loading from '@/components/Loading'
 
 export default {
   name: 'AddProductList',
   props: ['products'],
+  components: {
+    Loading
+  },
   data() {
-    return {}
+    return {
+      isLoading: false
+    }
+  },
+  methods: {
+    ...mapActions('products', {
+      findAllProducts: 'findAll'
+    }),
+    deleteProduct(id) {
+      this.$confirm({
+        title: 'Are you sure delete this product?',
+        content: "You can't undo this action",
+        okText: 'Yes, delete it',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk: () => {
+          this.isLoading = true
+          this.$store
+            .dispatch('products/destroy', 'asdfasdf')
+            .then(res => {
+              this.isLoading = false
+              this.$message.success('Product deleted successfully', 3)
+              this.findAllProducts()
+            })
+            .catch(err => {
+              console.log(err.response.data)
+              this.isLoading = false
+              this.$message.error(err.response.data, 3)
+              this.findAllProducts()
+            })
+        }
+      })
+    }
   }
 }
 </script>

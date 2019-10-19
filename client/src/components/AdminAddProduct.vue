@@ -133,10 +133,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#components-form-demo-validate-other .dropbox {
-  height: 180px;
-  line-height: 1.5;
-}
-</style>

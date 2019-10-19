@@ -34,6 +34,23 @@ const actions = {
         reject(err)
       }
     })
+  },
+  destroy({ commit }, id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data: res } = await api({
+          method: 'delete',
+          url: `/products/${id}/delete`,
+          headers: {
+            access_token:
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYWFjNDYwYzA4N2NhMjg0ZmIwYzIyZCIsImVtYWlsIjoia2V2QG1haWwuY29tIiwiaWF0IjoxNTcxNDg2NDU0fQ.M42t2LXEHC9dqZlXw8x4lTwkGsNAl0j3N7Fz8tEDPZs'
+          }
+        })
+        resolve(res)
+      } catch (err) {
+        reject(err)
+      }
+    })
   }
 }
 
