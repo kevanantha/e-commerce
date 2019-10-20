@@ -14,10 +14,17 @@ const authentication = (req, res, next) => {
 const authorizationCart = (req, res, next) => {
   Cart.findById(req.params.cartId)
     .then(cart => {
-      if (cart.userId == req.user.id) next()
-      else {
-        const err = new Error('Permission denied')
-        err.name = 'Unauthorized'
+      console.log(cart)
+      if (cart) {
+        if (cart.userId == req.user.id) next()
+        else {
+          const err = new Error('Permission denied')
+          err.name = 'Unauthorized'
+          next(err)
+        }
+      } else {
+        const err = new Error('Not Found')
+        err.name = 'NotFound'
         next(err)
       }
     })

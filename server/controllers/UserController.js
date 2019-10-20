@@ -15,7 +15,7 @@ module.exports = {
           phoneNumber: req.body.phoneNumber,
           address: req.body.address
         })
-        res.status(200).json({ token })
+        res.status(200).json({ token, id: user._id })
       } else {
         const err = new Error('Invalid email/password')
         err.name = 'AuthenticationError'
