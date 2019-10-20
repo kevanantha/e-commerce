@@ -36,7 +36,7 @@
       <LoginForm :visible="visible" :onClose="onClose" />
       <SignupForm :visible="visibleSignup" :onClose="onClose" />
       <a-layout-footer style="text-align: center">
-        Ant Design ©2018 Created by Ant UED
+        Kevin Anantha ©2019
       </a-layout-footer>
     </a-layout>
   </div>
@@ -53,7 +53,7 @@ export default {
     LoginForm,
     SignupForm
   },
-  data () {
+  data() {
     return {
       visible: false,
       visibleSignup: false
@@ -64,24 +64,24 @@ export default {
     ...mapGetters('cart', ['totalCarts'])
   },
   methods: {
-    showDrawer () {
+    showDrawer() {
       this.visible = true
     },
-    showDrawerSignup () {
+    showDrawerSignup() {
       this.visibleSignup = true
     },
-    onClose () {
+    onClose() {
       this.visible = false
       this.visibleSignup = false
     },
-    logout () {
+    logout() {
       this.$store.dispatch('users/logout')
       this.$store.commit('users/isLogin')
       this.$message.success('Logged out successfully', 3)
       this.$router.push('/').catch(err => {})
     }
   },
-  mounted () {
+  mounted() {
     this.$store.commit('users/isLogin')
   }
 }

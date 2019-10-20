@@ -44,9 +44,10 @@ module.exports = {
       next(err)
     }
   },
-  async index(req, res, next) {
+  async findOne(req, res, next) {
     try {
-      res.status(200).json('index')
+      const user = await User.findById(req.params.userId)
+      res.status(200).json(user)
     } catch (err) {
       next(err)
     }
