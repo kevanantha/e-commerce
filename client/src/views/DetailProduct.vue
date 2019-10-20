@@ -54,20 +54,25 @@ export default {
     ...mapActions('cart', { findAllCart: 'findAll' }),
     onChange(value) {},
     addToCart(productId) {
-      this.$store
-        .dispatch('cart/create', {
-          productId,
-          quantity: this.quantity,
-          totalPrice: this.totalPrice
-        })
-        .then(res => {
-          this.$router.push('/cart')
-          this.$message.success('Added to cart successfully', 3)
-          this.findAllCart()
-        })
-        .catch(err => {
-          this.$message.error(err.response.data, 3)
-        })
+      if (!localStorage.getItem('token')) {
+        this.$message.error('You need to login first', 3)
+        this.$router.push('/').catch(err => {})
+      } else {
+        this.$store
+          .dispatch('cart/create', {
+            productId,
+            quantity: this.quantity,
+            totalPrice: this.totalPrice
+          })
+          .then(res => {
+            this.$router.push('/cart')
+            this.$message.success('Added to cart successfully', 3)
+            this.findAllCart()
+          })
+          .catch(err => {
+            this.$message.error(err.response.data, 3)
+          })
+      }
     }
   },
   computed: {
