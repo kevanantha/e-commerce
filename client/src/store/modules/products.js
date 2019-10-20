@@ -9,14 +9,14 @@ const state = {
 const getters = {}
 
 const actions = {
-  async findAll ({ commit }) {
+  async findAll({ commit }) {
     const { data: products } = await api({
       method: 'get',
       url: `/products`
     })
     commit('setProducts', products)
   },
-  create ({ commit }, payload) {
+  create({ commit }, payload) {
     return new Promise(async (resolve, reject) => {
       try {
         const { data: product } = await api({
@@ -33,7 +33,7 @@ const actions = {
       }
     })
   },
-  update ({ commit }, payload) {
+  update({ commit }, payload) {
     let id
 
     for (let i of payload) {
@@ -56,7 +56,7 @@ const actions = {
       }
     })
   },
-  destroy ({ commit }, id) {
+  destroy({ commit }, id) {
     return new Promise(async (resolve, reject) => {
       try {
         const { data: res } = await api({
@@ -72,7 +72,7 @@ const actions = {
       }
     })
   },
-  findOne ({ commit }, productId) {
+  findOne({ commit }, productId) {
     return new Promise(async (resolve, reject) => {
       try {
         const { data: product } = await api({
@@ -89,11 +89,11 @@ const actions = {
 }
 
 const mutations = {
-  setProducts (state, products) {
+  setProducts(state, products) {
     state.products = products
     state.isLoading = false
   },
-  setDetailProduct (state, product) {
+  setDetailProduct(state, product) {
     state.product = product
     state.isLoading = false
   }
