@@ -1,22 +1,24 @@
 <template>
   <div>
-    <a-card :title="cart.productId.name">
-      <a href="#" slot="extra">{{ cart.productId.price | totalPriceCurrency }}</a>
+    <a-card style="margin-bottom: 2rem" :title="cart.productId.name">
+      <div slot="extra">{{ cart.productId.price | totalPriceCurrency }}</div>
       <div style="display: flex">
         <img :src="cart.productId.image" height="100px" alt="cart.productId.name" />
-        <a-form :form="form" @submit="handleSubmit" style="margin-left: 2rem">
-          {{ cart.quantity }}
+        <a-form style="margin-left: 2rem">
           <a-form-item label="Quantity">
-            <!-- <a-input-number v-decorator="['cart.quantity']" /> -->
-            <a-input-number :value="cart.quantity" @change="update" />
+            <a-input-number
+              :min="0"
+              :max="cart.productId.stock"
+              :value="cart.quantity"
+              @change="update"
+            />
           </a-form-item>
           <a-button type="primary" html-type="submit">
-            Submit
+            Checkout
           </a-button>
         </a-form>
       </div>
     </a-card>
-    {{ cart }}
   </div>
 </template>
 
@@ -32,51 +34,12 @@ export default {
       return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(value)
     }
   },
-  watch: {
-    quantity(val) {
-      console.log('this.$store.state.quantity: ', val)
-      this.form.setFieldsValue({ quantity: val })
-    }
-  },
-  created() {
-    this.form = this.$form.createForm(this, {
-      onFieldsChange: (_, changedFields) => {
-        this.$emit('change', changedFields)
-      },
-      mapPropsToFields: () => {
-        return {
-          quantity: this.$form.createFormField({
-            value: this.quantity
-          })
-        }
-      },
-      onValuesChange: (_, values) => {
-        console.log(values)
-        // Synchronize to vuex store in real time
-        // this.$store.commit('update', values)
-      }
-    })
-  },
   methods: {
-    handleSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.$store.commit('update', values)
-        }
-      })
-    },
     update(v) {
       this.$store.commit('cart/updateQty', { id: this.cart._id, qty: v })
-      this.$store
-        .dispatch('cart/updateQty', { id: this.cart._id, qty: v })
-        .then(_ => {
-          console.log('updated qty')
-        })
-        .catch(err => {
-          console.log(err.response.data)
-        })
+      this.$store.dispatch('cart/updateQty', { id: this.cart._id, qty: v }).catch(err => {
+        this.$message.error(err.response.data)
+      })
     }
   }
 }

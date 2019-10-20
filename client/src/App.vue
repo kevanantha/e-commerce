@@ -87,7 +87,7 @@ export default {
       this.$store.dispatch('users/logout')
       this.$store.commit('users/isLogin')
       this.$message.success('Logged out successfully', 3)
-      this.$router.push('/')
+      this.$router.push('/').catch(err => {})
     }
   },
   mounted() {

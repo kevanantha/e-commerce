@@ -94,7 +94,7 @@ export default {
               this.form.resetFields()
               this.$message.success('Logged in successfully', 3)
               this.onClose()
-              this.$router.push('/')
+              this.$router.push('/').catch(err => {})
             })
             .catch(err => {
               this.loadingBtn = false

@@ -20,6 +20,7 @@ export default {
 .text-center {
   text-align: center;
   margin: auto;
+  margin-bottom: 3rem;
   width: 65%;
 }
 </style>

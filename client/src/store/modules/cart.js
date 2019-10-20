@@ -5,7 +5,17 @@ const state = {
   isLoading: true
 }
 
-const getters = {}
+const getters = {
+  totalPrice() {
+    const subTotal = state.carts.map(cart => {
+      return cart.quantity * cart.productId.price
+    })
+    const total = subTotal.reduce((acc, current) => {
+      return acc + current
+    }, 0)
+    return total
+  }
+}
 
 const actions = {
   create({ commit }, payload) {
@@ -39,13 +49,9 @@ const actions = {
         access_token: localStorage.getItem('token')
       }
     })
-    console.log('actions')
-    console.log(carts)
     commit('findAll', carts)
   },
   updateQty({ state }, payload) {
-    console.log('************8')
-    console.log(state, payload)
     return new Promise(async (resolve, reject) => {
       try {
         const { data } = await api({

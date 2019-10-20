@@ -32,7 +32,6 @@
         </p>
       </div>
     </div>
-    {{ carts }}
   </div>
 </template>
 
@@ -48,17 +47,13 @@ export default {
   data() {
     return {
       quantity: 1
-      //totalPrice: this.product.price * this.quantity
     }
   },
   methods: {
     ...mapActions('products', ['findOne']),
     ...mapActions('cart', { findAllCart: 'findAll' }),
-    onChange(value) {
-      console.log(value)
-    },
+    onChange(value) {},
     addToCart(productId) {
-      this.$message.loading('Adding to cart', 0)
       this.$store
         .dispatch('cart/create', {
           productId,
@@ -66,16 +61,14 @@ export default {
           totalPrice: this.totalPrice
         })
         .then(res => {
-          console.log('masuk')
-          console.log(res)
           this.$router.push('/cart')
+          this.$message.success('Added to cart successfully', 3)
           /*this.$store.dispatch('carts', {
             findAllCarts: 'findAll'
           })*/
         })
         .catch(err => {
-          console.log('errrrrrrrrrrr')
-          console.log(err.response.data)
+          this.$message.error(err.response.data, 3)
         })
     }
   },

@@ -1,16 +1,16 @@
 <template>
   <div>
-    <Loading v-if="isLoading" tip="Deleting product..." />
+    <Loading v-if="isLoading" tip="Loading..." />
     <a-list
       :grid="{ gutter: 12, xs: 1, sm: 1, md: 1, lg: 2, xl: 3, xxl: 4 }"
       :dataSource="products.products"
     >
       <a-list-item slot="renderItem" slot-scope="product, index">
-        <a-card hoverable style="width: 300px">
+        <a-card hoverable style="width: 300px; margin: auto">
           <img style="height: 200px" :alt="product.name" :src="product.image" slot="cover" />
           <template class="ant-card-actions" slot="actions">
             <a-icon type="setting" />
-            <a-icon type="edit" />
+            <a-icon @click="showDrawer(product._id)" type="edit" />
             <a-icon @click="deleteProduct(product._id)" type="delete" />
           </template>
           <a-card-meta
@@ -21,23 +21,28 @@
         </a-card>
       </a-list-item>
     </a-list>
+    <EditForm v-if="visible" :visible="visible" :onClose="onClose" />
   </div>
 </template>
 
 <script>
+import truncate from 'truncate'
+
 import { mapState, mapActions } from 'vuex'
 import Loading from '@/components/Loading'
-import truncate from 'truncate'
+import EditForm from '@/components/EditForm'
 
 export default {
   name: 'AddProductList',
   props: ['products'],
   components: {
-    Loading
+    Loading,
+    EditForm
   },
   data() {
     return {
-      isLoading: false
+      isLoading: false,
+      visible: false
     }
   },
   filters: {
@@ -47,8 +52,20 @@ export default {
   },
   methods: {
     ...mapActions('products', {
-      findAllProducts: 'findAll'
+      findAllProducts: 'findAll',
+      findOne: 'findOne'
     }),
+    showDrawer(id) {
+      this.isLoading = true
+      this.findOne(id).then(product => {
+        this.isLoading = false
+        this.visible = true
+      })
+    },
+    onClose() {
+      this.visible = false
+      this.productId = null
+    },
     deleteProduct(id) {
       this.$confirm({
         title: 'Are you sure delete this product?',

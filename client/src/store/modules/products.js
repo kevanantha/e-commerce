@@ -27,9 +27,26 @@ const actions = {
           },
           data: payload
         })
-        if (product) {
-          resolve(product)
-        }
+        resolve(product)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  },
+  update({ commit }, payload) {
+    console.log('masuk woui')
+    console.log(payload)
+    return new Promise(async (resolve, reject) => {
+      try {
+        await api({
+          method: 'put',
+          url: `/products/${payload.id}/update`,
+          headers: {
+            access_token: localStorage.getItem('token')
+          },
+          data: payload
+        })
+        resolve()
       } catch (err) {
         reject(err)
       }
