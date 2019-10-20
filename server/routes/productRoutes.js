@@ -6,6 +6,7 @@ const gcs = require('../middlewares/gcs')
 const isAdmin = require('../middlewares/isAdmin')
 
 router.get('/', ProductController.index)
+router.get('/:productId', ProductController.show)
 router.use(authentication)
 router.post('/create', isAdmin, multer.single('image'), gcs, ProductController.create)
 router.delete('/:productId/delete', isAdmin, ProductController.delete)

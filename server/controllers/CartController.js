@@ -1,7 +1,7 @@
 const Cart = require('../models/Cart')
 
 module.exports = {
-  async index(req, res, next) {
+  async findAllByUserId(req, res, next) {
     try {
       const carts = await Cart.find({ userId: req.user.id }).populate(['userId', 'productId'])
       res.status(200).json(carts)
@@ -39,6 +39,23 @@ module.exports = {
         { runValidators: true }
       )
       res.status(204).json(updated)
+    } catch (err) {
+      next(err)
+    }
+  },
+  async updateQty(req, res, next) {
+    try {
+      const updated = await Cart.updateOne(
+        {
+          _id: req.params.cartId
+        },
+        {
+          $set: {
+            quantity: req.body.quantity
+          }
+        }
+      )
+      res.status(200).json(updated)
     } catch (err) {
       next(err)
     }

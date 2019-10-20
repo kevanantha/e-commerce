@@ -13,7 +13,11 @@
             <a-icon type="edit" />
             <a-icon @click="deleteProduct(product._id)" type="delete" />
           </template>
-          <a-card-meta :title="product.name" :description="product.description"> </a-card-meta>
+          <a-card-meta
+            :title="product.name"
+            :description="product.description | descriptionTrancate"
+          >
+          </a-card-meta>
         </a-card>
       </a-list-item>
     </a-list>
@@ -23,6 +27,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import Loading from '@/components/Loading'
+import truncate from 'truncate'
 
 export default {
   name: 'AddProductList',
@@ -33,6 +38,11 @@ export default {
   data() {
     return {
       isLoading: false
+    }
+  },
+  filters: {
+    descriptionTrancate(v) {
+      return truncate(v, 30, { ellipsis: null })
     }
   },
   methods: {
@@ -56,7 +66,6 @@ export default {
               this.findAllProducts()
             })
             .catch(err => {
-              console.log(err.response.data)
               this.isLoading = false
               this.$message.error(err.response.data, 3)
               this.findAllProducts()

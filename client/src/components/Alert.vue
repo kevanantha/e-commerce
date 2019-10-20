@@ -8,7 +8,6 @@ export default {
   props: ['message', 'description', 'type'],
   computed: {
     descriptionJoin() {
-      console.log(this.description)
       return this.description.join(', ')
     }
   }

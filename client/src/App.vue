@@ -16,11 +16,13 @@
             <router-link to="/about">Cart</router-link>
           </a-menu-item>
           <a-menu-item key="3">nav 3</a-menu-item>
-          <a-menu-item v-if="isLogin" @click="logout" class="right-menu" key="6"
-            >Logout</a-menu-item
-          >
+          <a-menu-item v-if="isLogin" @click="logout" class="right-menu" key="6">
+            Logout
+          </a-menu-item>
           <a-menu-item v-if="isLogin" class="right-menu" key="7">
-            <a-icon type="shopping-cart" />
+            <router-link to="/cart">
+              <a-icon type="shopping-cart" />
+            </router-link>
           </a-menu-item>
           <a-menu-item v-if="!isLogin" @click="showDrawerSignup" class="right-menu" key="4"
             >Sign up</a-menu-item
@@ -85,6 +87,7 @@ export default {
       this.$store.dispatch('users/logout')
       this.$store.commit('users/isLogin')
       this.$message.success('Logged out successfully', 3)
+      this.$router.push('/')
     }
   },
   mounted() {

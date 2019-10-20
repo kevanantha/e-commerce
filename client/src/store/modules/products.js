@@ -2,6 +2,7 @@ import api from '@/api/api'
 
 const state = {
   products: [],
+  product: {},
   isLoading: true
 }
 
@@ -22,8 +23,7 @@ const actions = {
           method: 'post',
           url: '/products/create',
           headers: {
-            access_token:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYWFjNDYwYzA4N2NhMjg0ZmIwYzIyZCIsImVtYWlsIjoia2V2QG1haWwuY29tIiwiaWF0IjoxNTcxNDg2NDU0fQ.M42t2LXEHC9dqZlXw8x4lTwkGsNAl0j3N7Fz8tEDPZs'
+            access_token: localStorage.getItem('token')
           },
           data: payload
         })
@@ -42,11 +42,25 @@ const actions = {
           method: 'delete',
           url: `/products/${id}/delete`,
           headers: {
-            access_token:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYWFjNDYwYzA4N2NhMjg0ZmIwYzIyZCIsImVtYWlsIjoia2V2QG1haWwuY29tIiwiaWF0IjoxNTcxNDg2NDU0fQ.M42t2LXEHC9dqZlXw8x4lTwkGsNAl0j3N7Fz8tEDPZs'
+            access_token: localStorage.getItem('token')
           }
         })
         resolve(res)
+      } catch (err) {
+        reject(err)
+      }
+    })
+  },
+  findOne({ commit }, productId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { data: product } = await api({
+          method: 'get',
+          url: `/products/${productId}`
+        })
+        console.log(product)
+        commit('setDetailProduct', product)
+        resolve(product)
       } catch (err) {
         reject(err)
       }
@@ -57,6 +71,10 @@ const actions = {
 const mutations = {
   setProducts(state, products) {
     state.products = products
+    state.isLoading = false
+  },
+  setDetailProduct(state, product) {
+    state.product = product
     state.isLoading = false
   }
 }

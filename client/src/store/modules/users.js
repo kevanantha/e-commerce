@@ -42,8 +42,6 @@ const actions = {
           }
         })
         localStorage.setItem('token', user.token)
-        console.log('masuk sini lah bgst')
-        console.log(user)
         resolve()
         commit('isLogin')
       } catch (err) {
