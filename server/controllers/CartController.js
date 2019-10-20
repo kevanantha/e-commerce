@@ -23,7 +23,7 @@ module.exports = {
       const deleted = await Cart.deleteOne({
         _id: req.params.cartId
       })
-      res.status(204).json(deleted)
+      res.status(204).json()
     } catch (err) {
       next(err)
     }
@@ -51,7 +51,8 @@ module.exports = {
         },
         {
           $set: {
-            quantity: req.body.quantity
+            quantity: req.body.quantity,
+            totalPrice: req.body.totalPrice
           }
         }
       )

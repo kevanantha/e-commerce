@@ -1,4 +1,5 @@
 const { verifyToken } = require('../helpers/jwt')
+const Cart = require('../models/Cart')
 
 const authentication = (req, res, next) => {
   try {
@@ -10,6 +11,22 @@ const authentication = (req, res, next) => {
   }
 }
 
+const authorizationCart = (req, res, next) => {
+  Cart.findById(req.params.cartId)
+    .then(cart => {
+      if (cart.userId == req.user.id) next()
+      else {
+        const err = new Error('Permission denied')
+        err.name = 'Unauthorized'
+        next(err)
+      }
+    })
+    .catch(err => {
+      next(err)
+    })
+}
+
 module.exports = {
-  authentication
+  authentication,
+  authorizationCart
 }
