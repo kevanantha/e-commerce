@@ -131,12 +131,10 @@ export default {
     ...mapState('products', ['product'])
   },
   methods: {
-    ...mapActions('products', ['findOne']),
+    ...mapActions('products', ['findOne', 'findAll']),
     handleSubmit() {
       this.loadingBtn = true
       this.form.validateFields((err, values) => {
-        console.log('calue*******************')
-        console.log(values)
         if (!err) {
           const formData = new FormData()
           if (values.image.fileList) {
@@ -148,17 +146,15 @@ export default {
           formData.set('price', values.price)
           formData.set('stock', values.stock)
           formData.set('description', values.description)
-          for (let i of formData) {
-            console.log(i)
-          }
+          formData.set('id', this.product._id)
           this.$store
-            .dispatch('products/update', { formData, id: this.product._id })
+            .dispatch('products/update', formData)
             .then(_ => {
               this.loadingBtn = false
               this.$message.success('Product updated successfully', 3)
               this.image = []
               this.form.resetFields()
-              this.findAllProducts()
+              this.findAll()
               this.onClose()
             })
             .catch(err => {

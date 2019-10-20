@@ -34,13 +34,17 @@ const actions = {
     })
   },
   update({ commit }, payload) {
-    console.log('masuk woui')
-    console.log(payload)
+    let id
+
+    for (let i of payload) {
+      if (i[0] == 'id') id = i[1]
+    }
+
     return new Promise(async (resolve, reject) => {
       try {
         await api({
           method: 'put',
-          url: `/products/${payload.id}/update`,
+          url: `/products/${id}/update`,
           headers: {
             access_token: localStorage.getItem('token')
           },
@@ -75,7 +79,6 @@ const actions = {
           method: 'get',
           url: `/products/${productId}`
         })
-        console.log(product)
         commit('setDetailProduct', product)
         resolve(product)
       } catch (err) {
