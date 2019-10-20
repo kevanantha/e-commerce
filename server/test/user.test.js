@@ -7,9 +7,9 @@ const User = require('../models/User')
 
 chai.use(chaiHttp)
 
-after(function() {
-  return User.deleteMany({})
-})
+// after(function() {
+//   return User.deleteMany({})
+// })
 
 describe('Auth User', function() {
   describe('POST /users/register', function() {

@@ -6,22 +6,22 @@ const state = {
 }
 
 const getters = {
-  totalPrice () {
+  totalPrice() {
     const subTotal = state.carts.map(cart => {
-      return cart.quantity * cart.productId.price
+      return Number(cart.totalPrice)
     })
     const total = subTotal.reduce((acc, current) => {
       return acc + current
     }, 0)
     return total
   },
-  totalCarts () {
+  totalCarts() {
     return state.carts.length
   }
 }
 
 const actions = {
-  create ({ commit }, payload) {
+  create({ commit }, payload) {
     const { quantity, totalPrice, productId } = payload
     return new Promise(async (resolve, reject) => {
       try {
@@ -44,7 +44,7 @@ const actions = {
       }
     })
   },
-  async findAll ({ commit }) {
+  async findAll({ commit }) {
     const { data: carts } = await api({
       method: 'get',
       url: '/carts',
@@ -54,7 +54,7 @@ const actions = {
     })
     commit('findAll', carts)
   },
-  updateQty (_, payload) {
+  updateQty(_, payload) {
     return new Promise(async (resolve, reject) => {
       try {
         const { data } = await api({
@@ -74,7 +74,7 @@ const actions = {
       }
     })
   },
-  destroy ({ commit }, cartId) {
+  destroy({ commit }, cartId) {
     return new Promise(async (resolve, reject) => {
       try {
         await api({
@@ -93,15 +93,15 @@ const actions = {
 }
 
 const mutations = {
-  setCarts (state, payload) {
+  setCarts(state, payload) {
     state.carts.push(payload)
     state.isLoading = false
   },
-  findAll (state, payload) {
+  findAll(state, payload) {
     state.carts = payload
     state.isLoading = false
   },
-  updateQty (state, payload) {
+  updateQty(state, payload) {
     const selectedCart = state.carts.find(cart => cart._id == payload.id)
     selectedCart.quantity = payload.qty
     selectedCart.totalPrice = payload.totalPrice

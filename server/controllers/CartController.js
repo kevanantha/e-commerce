@@ -11,9 +11,23 @@ module.exports = {
   },
   async create(req, res, next) {
     try {
-      const { productId, quantity, totalPrice } = req.body
-      const cart = await Cart.create({ productId, quantity, totalPrice, userId: req.user.id })
-      res.status(201).json(cart)
+      const existingCart = await Cart.findOne({
+        productId: req.body.productId,
+        userId: req.user.id
+      }).populate('productId')
+
+      if (existingCart) {
+        existingCart.quantity += req.body.quantity
+        existingCart.totalPrice = existingCart.quantity * existingCart.productId.price
+        return existingCart
+          .save()
+          .then(_ => res.status(201).json())
+          .catch(err => next(err))
+      } else {
+        const { productId, quantity, totalPrice } = req.body
+        const cart = await Cart.create({ productId, quantity, totalPrice, userId: req.user.id })
+        res.status(201).json(cart)
+      }
     } catch (err) {
       next(err)
     }

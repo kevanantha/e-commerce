@@ -12,8 +12,12 @@ module.exports = {
   },
   async create(req, res, next) {
     try {
-      console.log(req.file, req.body)
-      const image = req.file.cloudStoragePublicUrl
+      let image
+      if (req.file) {
+        image = req.file.cloudStoragePublicUrl
+      } else {
+        image = req.body.image
+      }
       const { name, price, stock, categories, description } = req.body
       const product = await Product.create({
         name,

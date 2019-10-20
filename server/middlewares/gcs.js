@@ -13,8 +13,6 @@ const getPublicUrl = filename => {
 }
 
 module.exports = (req, res, next) => {
-  console.log('===================================')
-  console.log(req.file)
   if (!req.file) {
     return next()
   } else if (!req.file.mimetype.includes('image/jpeg')) {

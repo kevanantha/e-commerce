@@ -15,10 +15,11 @@ before('get JWT Token', function(done) {
   const body = {
     email: 'john@doe.com',
     password: 'secretofjohndoe'
+    // isAdmin: true
   }
   chai
     .request(app)
-    .post('/users/register')
+    .post('/users/login')
     .send(body)
     .end(function(err, res) {
       token = res.body.token
@@ -78,17 +79,7 @@ describe('Products', function() {
     describe('Correct Data Params', function() {
       describe('[ CREATE ] Should return created product object', function() {
         it('[ CREATE ] Should return created product object', function(done) {
-          // const product = {
-          //   name: 'product1',
-          //   price: '15000',
-          //   stock: 10,
-          //   categories: ['a', 's', 'd', 'f'],
-          //   // image: 'ini image url',
-          //   description: 'lorem ipsum'
-          // }
           const headers = { access_token: token }
-          console.log('***********************************')
-          console.log(fs.readFileSync('./test/example.jpg'))
           chai
             .request(app)
             .post('/products/create')
@@ -128,21 +119,18 @@ describe('Products', function() {
 
     describe('Invalid Data Params', function() {
       describe('[ Product ] should throw error minimal stock is 0', function() {
-        it('Minial stock is 0', function(done) {
-          const product = {
-            name: 'product1',
-            price: '15000',
-            stock: -1,
-            categories: ['a', 's', 'd', 'f'],
-            image: 'ini image url',
-            description: 'lorem ipsum'
-          }
+        it('Minimal stock is 0', function(done) {
           const headers = { access_token: token }
           chai
             .request(app)
             .post('/products/create')
             .set(headers)
-            .send(product)
+            .attach('image', fs.readFileSync('./test/example.jpg'), 'example.jpg')
+            .field('name', 'product1')
+            .field('price', '1500000')
+            .field('stock', -1)
+            .field('categories', ['a', 's', 'd', 'f'])
+            .field('description', 'lorem ipsum')
             .end(function(err, res) {
               expect(res.status).to.equal(400)
               expect(res.body)
@@ -151,7 +139,7 @@ describe('Products', function() {
               expect(res.body).to.have.lengthOf(1)
               done()
             })
-        })
+        }).timeout(30000)
       })
       describe('[ Product ] should throw error all field is required', function() {
         it('All field required', function(done) {
@@ -168,7 +156,12 @@ describe('Products', function() {
             .request(app)
             .post('/products/create')
             .set(headers)
-            .send(product)
+            .attach('image', '')
+            .field('name', '')
+            .field('price', '')
+            .field('stock', '')
+            .field('categories', [])
+            .field('description', '')
             .end(function(err, res) {
               expect(res.status).to.equal(400)
               expect(res.body)
@@ -180,19 +173,17 @@ describe('Products', function() {
       })
       describe('[ Product ] should throw error field name is required', function() {
         it('Name is required', function(done) {
-          const product = {
-            name: '',
-            price: '1000',
-            stock: 100,
-            image: 'image',
-            description: 'desc'
-          }
           const headers = { access_token: token }
           chai
             .request(app)
             .post('/products/create')
             .set(headers)
-            .send(product)
+            .attach('image', fs.readFileSync('./test/example.jpg'), 'example.jpg')
+            .field('name', '')
+            .field('price', '1500000')
+            .field('stock', 1)
+            .field('categories', ['a', 's', 'd', 'f'])
+            .field('description', 'lorem ipsum')
             .end(function(err, res) {
               expect(res.status).to.equal(400)
               expect(res.body)
@@ -200,23 +191,21 @@ describe('Products', function() {
                 .that.to.have.lengthOf(1)
               done()
             })
-        })
+        }).timeout(30000)
       })
       describe('[ Product ] should throw error field price is required', function() {
         it('price is required', function(done) {
-          const product = {
-            name: 'name',
-            price: '',
-            stock: 100,
-            image: 'image',
-            description: 'desc'
-          }
           const headers = { access_token: token }
           chai
             .request(app)
             .post('/products/create')
             .set(headers)
-            .send(product)
+            .attach('image', fs.readFileSync('./test/example.jpg'), 'example.jpg')
+            .field('name', 'aasdasd')
+            .field('price', '')
+            .field('stock', 1)
+            .field('categories', ['a', 's', 'd', 'f'])
+            .field('description', 'lorem ipsum')
             .end(function(err, res) {
               expect(res.status).to.equal(400)
               expect(res.body)
@@ -224,23 +213,21 @@ describe('Products', function() {
                 .that.to.have.lengthOf(1)
               done()
             })
-        })
+        }).timeout(30000)
       })
       describe('[ Product ] should throw error field stock is required', function() {
         it('stock is required', function(done) {
-          const product = {
-            name: 'name',
-            price: '123',
-            stock: '',
-            image: 'image',
-            description: 'desc'
-          }
           const headers = { access_token: token }
           chai
             .request(app)
             .post('/products/create')
             .set(headers)
-            .send(product)
+            .attach('image', fs.readFileSync('./test/example.jpg'), 'example.jpg')
+            .field('name', 'aasdasd')
+            .field('price', '123123')
+            .field('stock', '')
+            .field('categories', ['a', 's', 'd', 'f'])
+            .field('description', 'lorem ipsum')
             .end(function(err, res) {
               expect(res.status).to.equal(400)
               expect(res.body)
@@ -248,23 +235,21 @@ describe('Products', function() {
                 .that.to.have.lengthOf(1)
               done()
             })
-        })
+        }).timeout(30000)
       })
       describe('[ Product ] should throw error field image is required', function() {
         it('image is required', function(done) {
-          const product = {
-            name: 'name',
-            price: '123',
-            stock: 123,
-            image: '',
-            description: 'desc'
-          }
           const headers = { access_token: token }
           chai
             .request(app)
             .post('/products/create')
             .set(headers)
-            .send(product)
+            .attach('image', '')
+            .field('name', 'aasdasd')
+            .field('price', '123123')
+            .field('stock', 12)
+            .field('categories', ['a', 's', 'd', 'f'])
+            .field('description', 'lorem ipsum')
             .end(function(err, res) {
               expect(res.status).to.equal(400)
               expect(res.body)
@@ -272,23 +257,21 @@ describe('Products', function() {
                 .that.to.have.lengthOf(1)
               done()
             })
-        })
+        }).timeout(30000)
       })
       describe('[ Product ] should throw error field description is required', function() {
         it('description is required', function(done) {
-          const product = {
-            name: 'name',
-            price: '123',
-            stock: 123,
-            image: 'url image',
-            description: ''
-          }
           const headers = { access_token: token }
           chai
             .request(app)
             .post('/products/create')
             .set(headers)
-            .send(product)
+            .attach('image', fs.readFileSync('./test/example.jpg'), 'example.jpg')
+            .field('name', 'aasdasd')
+            .field('price', '123123')
+            .field('stock', 12)
+            .field('categories', ['a', 's', 'd', 'f'])
+            .field('description', '')
             .end(function(err, res) {
               expect(res.status).to.equal(400)
               expect(res.body)
@@ -296,7 +279,7 @@ describe('Products', function() {
                 .that.to.have.lengthOf(1)
               done()
             })
-        })
+        }).timeout(30000)
       })
     })
   })

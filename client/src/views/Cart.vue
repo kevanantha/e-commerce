@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 80vh">
+  <div style="min-height: 76vh">
     <Loading v-if="isLoading" tip="Loading Cart..." />
     <div v-if="!carts.length && !isLoading" style="margin: auto; text-align: center">No Data</div>
     <a-card v-if="!isLoading && carts.length" title="Cart">
@@ -22,11 +22,11 @@ export default {
     CardCart,
     Loading
   },
-  data () {
+  data() {
     return {}
   },
   filters: {
-    totalPriceCurrency (value) {
+    totalPriceCurrency(value) {
       return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(value)
     }
   },
@@ -37,7 +37,7 @@ export default {
   methods: {
     ...mapActions('cart', { findAllCarts: 'findAll' })
   },
-  mounted () {
+  mounted() {
     this.findAllCarts()
   }
 }

@@ -4,17 +4,22 @@ const cartSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      required: [true, 'userId is required']
     },
     productId: {
       type: Schema.Types.ObjectId,
-      ref: 'Product'
+      ref: 'Product',
+      required: [true, 'productId is required']
     },
     quantity: {
-      type: Number
+      type: Number,
+      required: [true, 'quantity is required'],
+      min: 1
     },
     totalPrice: {
-      type: String
+      type: String,
+      required: [true, 'totalPrice is required']
     }
   },
   { versionKey: false, timestamps: true }

@@ -41,19 +41,19 @@ export default {
     Loading
   },
   props: ['cart'],
-  data () {
+  data() {
     return {
       isLoading: false
     }
   },
   filters: {
-    totalPriceCurrency (value) {
+    totalPriceCurrency(value) {
       return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(value)
     }
   },
   methods: {
     ...mapActions('cart', ['findAll']),
-    deleteCart (id) {
+    deleteCart(id) {
       this.$confirm({
         title: 'Are you sure delete this cart?',
         content: "You can't undo this action",
@@ -75,7 +75,7 @@ export default {
         }
       })
     },
-    update (v) {
+    update(v) {
       this.$store.commit('cart/updateQty', {
         id: this.cart._id,
         qty: v,

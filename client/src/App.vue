@@ -2,15 +2,9 @@
   <div id="app">
     <a-layout id="components-layout-top" class="layout">
       <a-layout-header>
-        <div class="logo" />
-        <a-menu
-          theme="dark"
-          mode="horizontal"
-          :defaultSelectedKeys="['2']"
-          :style="{ lineHeight: '64px' }"
-        >
+        <a-menu theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
           <a-menu-item key="1">
-            <router-link to="/">Home</router-link>
+            <router-link to="/">Keia</router-link>
           </a-menu-item>
           <a-menu-item v-if="isLogin" @click="logout" class="right-menu" key="6">
             Logout
@@ -97,7 +91,7 @@ export default {
 #components-layout-top .logo {
   width: 120px;
   height: 31px;
-  background: rgba(255, 255, 255, 0.2);
+  background: url('./assets/logobrand.png');
   margin: 16px 24px 16px 0;
   float: left;
 }

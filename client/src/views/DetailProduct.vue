@@ -44,7 +44,7 @@ export default {
   components: {
     Loading
   },
-  data () {
+  data() {
     return {
       quantity: 1
     }
@@ -52,8 +52,8 @@ export default {
   methods: {
     ...mapActions('products', ['findOne']),
     ...mapActions('cart', { findAllCart: 'findAll' }),
-    onChange (value) {},
-    addToCart (productId) {
+    onChange(value) {},
+    addToCart(productId) {
       this.$store
         .dispatch('cart/create', {
           productId,
@@ -63,6 +63,7 @@ export default {
         .then(res => {
           this.$router.push('/cart')
           this.$message.success('Added to cart successfully', 3)
+          this.findAllCart()
         })
         .catch(err => {
           this.$message.error(err.response.data, 3)
@@ -72,16 +73,16 @@ export default {
   computed: {
     ...mapState('products', ['product', 'isLoading']),
     ...mapState('cart', ['carts']),
-    totalPrice () {
+    totalPrice() {
       return this.product.price * this.quantity
     }
   },
   filters: {
-    totalPriceCurrency (value) {
+    totalPriceCurrency(value) {
       return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(value)
     }
   },
-  mounted () {
+  mounted() {
     this.findOne(this.$route.params.productId).catch(err => {
       this.$message.error(err.response.data, 3)
     })
