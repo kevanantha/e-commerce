@@ -5,6 +5,7 @@ import Admin from './views/Admin.vue'
 import AdminAddProduct from './components/AdminAddProduct.vue'
 import DetailProduct from './views/DetailProduct.vue'
 import Cart from './views/Cart.vue'
+import NotFoundPage from './views/NotFoundPage.vue'
 
 Vue.use(Router)
 
@@ -20,7 +21,11 @@ export default new Router({
     {
       path: '/cart',
       name: 'cart',
-      component: Cart
+      component: Cart,
+      beforeEnter: (to, from, next) => {
+        if (!localStorage.getItem('token')) next('/404')
+        else next()
+      }
     },
     {
       path: '/products/:productId',
@@ -37,15 +42,16 @@ export default new Router({
           name: 'add product',
           component: AdminAddProduct
         }
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        if (!localStorage.getItem('token')) next('/404')
+        else next()
+      }
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '*',
+      name: '404',
+      component: NotFoundPage
     }
   ]
 })

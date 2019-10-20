@@ -12,16 +12,14 @@
           <a-menu-item key="1">
             <router-link to="/">Home</router-link>
           </a-menu-item>
-          <a-menu-item key="2">
-            <router-link to="/about">Cart</router-link>
-          </a-menu-item>
-          <a-menu-item key="3">nav 3</a-menu-item>
           <a-menu-item v-if="isLogin" @click="logout" class="right-menu" key="6">
             Logout
           </a-menu-item>
           <a-menu-item v-if="isLogin" class="right-menu" key="7">
             <router-link to="/cart">
-              <a-icon type="shopping-cart" />
+              <a-badge :count="totalCarts" :overflowCount="10">
+                <a-icon type="shopping-cart" />
+              </a-badge>
             </router-link>
           </a-menu-item>
           <a-menu-item v-if="!isLogin" @click="showDrawerSignup" class="right-menu" key="4"
@@ -32,13 +30,7 @@
           </a-menu-item>
         </a-menu>
       </a-layout-header>
-      <a-layout-content style="padding: 0 50px">
-        <Breadcrumb />
-        <!-- <a-breadcrumb style="margin: 16px 0"> -->
-        <!--   <a-breadcrumb-item>Home</a-breadcrumb-item> -->
-        <!--   <a-breadcrumb-item>List</a-breadcrumb-item> -->
-        <!--   <a-breadcrumb-item>App</a-breadcrumb-item> -->
-        <!-- </a-breadcrumb> -->
+      <a-layout-content style="padding: 0 50px; margin: 3rem 0">
         <router-view />
       </a-layout-content>
       <LoginForm :visible="visible" :onClose="onClose" />
@@ -51,46 +43,45 @@
 </template>
 
 <script>
-import Breadcrumb from '@/components/Breadcrumb'
 import LoginForm from '@/components/LoginForm'
 import SignupForm from '@/components/SignupForm'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    Breadcrumb,
     LoginForm,
     SignupForm
   },
-  data() {
+  data () {
     return {
       visible: false,
       visibleSignup: false
     }
   },
   computed: {
-    ...mapState('users', ['isLogin'])
+    ...mapState('users', ['isLogin']),
+    ...mapGetters('cart', ['totalCarts'])
   },
   methods: {
-    showDrawer() {
+    showDrawer () {
       this.visible = true
     },
-    showDrawerSignup() {
+    showDrawerSignup () {
       this.visibleSignup = true
     },
-    onClose() {
+    onClose () {
       this.visible = false
       this.visibleSignup = false
     },
-    logout() {
+    logout () {
       this.$store.dispatch('users/logout')
       this.$store.commit('users/isLogin')
       this.$message.success('Logged out successfully', 3)
       this.$router.push('/').catch(err => {})
     }
   },
-  mounted() {
+  mounted () {
     this.$store.commit('users/isLogin')
   }
 }

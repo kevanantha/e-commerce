@@ -6,7 +6,7 @@ const state = {
 }
 
 const getters = {
-  totalPrice() {
+  totalPrice () {
     const subTotal = state.carts.map(cart => {
       return cart.quantity * cart.productId.price
     })
@@ -14,11 +14,14 @@ const getters = {
       return acc + current
     }, 0)
     return total
+  },
+  totalCarts () {
+    return state.carts.length
   }
 }
 
 const actions = {
-  create({ commit }, payload) {
+  create ({ commit }, payload) {
     const { quantity, totalPrice, productId } = payload
     return new Promise(async (resolve, reject) => {
       try {
@@ -41,7 +44,7 @@ const actions = {
       }
     })
   },
-  async findAll({ commit }) {
+  async findAll ({ commit }) {
     const { data: carts } = await api({
       method: 'get',
       url: '/carts',
@@ -51,15 +54,32 @@ const actions = {
     })
     commit('findAll', carts)
   },
-  updateQty({ state }, payload) {
+  updateQty (_, payload) {
     return new Promise(async (resolve, reject) => {
       try {
         const { data } = await api({
           method: 'patch',
           url: `/carts/${payload.id}/updateQty`,
           data: {
-            quantity: payload.qty
+            quantity: payload.qty,
+            totalPrice: payload.totalPrice
           },
+          headers: {
+            access_token: localStorage.getItem('token')
+          }
+        })
+        resolve()
+      } catch (err) {
+        reject(err)
+      }
+    })
+  },
+  destroy ({ commit }, cartId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await api({
+          method: 'delete',
+          url: `/carts/${cartId}/delete`,
           headers: {
             access_token: localStorage.getItem('token')
           }
@@ -73,17 +93,18 @@ const actions = {
 }
 
 const mutations = {
-  setCarts(state, payload) {
+  setCarts (state, payload) {
     state.carts.push(payload)
     state.isLoading = false
   },
-  findAll(state, payload) {
+  findAll (state, payload) {
     state.carts = payload
     state.isLoading = false
   },
-  updateQty(state, payload) {
+  updateQty (state, payload) {
     const selectedCart = state.carts.find(cart => cart._id == payload.id)
     selectedCart.quantity = payload.qty
+    selectedCart.totalPrice = payload.totalPrice
   }
 }
 

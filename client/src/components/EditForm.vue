@@ -106,13 +106,13 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: 'EditForm',
   props: ['visible', 'onClose'],
-  data() {
+  data () {
     return {
       isLoading: false,
-      /*name: this.product.name,
+      /* name: this.product.name,
       price: this.product.price,
       stock: this.product.stock,
-      description: this.product.description,*/
+      description: this.product.description, */
       image: [],
       formItemLayout: {
         labelCol: { span: 6 },
@@ -124,7 +124,7 @@ export default {
       }
     }
   },
-  beforeCreate() {
+  beforeCreate () {
     this.form = this.$form.createForm(this, { name: 'validate_other' })
   },
   computed: {
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     ...mapActions('products', ['findOne', 'findAll']),
-    handleSubmit() {
+    handleSubmit () {
       this.loadingBtn = true
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -167,13 +167,13 @@ export default {
         }
       })
     },
-    handleRemove(file) {
+    handleRemove (file) {
       const index = this.image.indexOf(file)
       const newImage = this.image.slice()
       newImage.splice(index, 1)
       this.image = newImage
     },
-    beforeUpload(file) {
+    beforeUpload (file) {
       this.image = [file]
       return false
     }

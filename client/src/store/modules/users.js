@@ -7,7 +7,7 @@ const state = {
 const getters = {}
 
 const actions = {
-  login({ commit }, payload) {
+  login ({ commit }, payload) {
     const { email, password } = payload
     return new Promise(async (resolve, reject) => {
       try {
@@ -27,7 +27,7 @@ const actions = {
       }
     })
   },
-  register({ commit }, payload) {
+  register ({ commit }, payload) {
     const { email, password, phoneNumber, address } = payload
     return new Promise(async (resolve, reject) => {
       try {
@@ -49,14 +49,14 @@ const actions = {
       }
     })
   },
-  logout({ commit }) {
+  logout ({ commit }) {
     localStorage.clear()
     commit('isLogin')
   }
 }
 
 const mutations = {
-  isLogin(state) {
+  isLogin (state) {
     if (localStorage.getItem('token')) {
       state.isLogin = true
     } else {

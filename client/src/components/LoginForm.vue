@@ -57,7 +57,7 @@ import Alert from '@/components/Alert'
 export default {
   name: 'LoginForm',
   props: ['visible', 'onClose'],
-  data() {
+  data () {
     return {
       loadingBtn: false,
       error: {
@@ -65,11 +65,11 @@ export default {
       }
     }
   },
-  beforeCreate() {
+  beforeCreate () {
     this.form = this.$form.createForm(this, { name: 'normal_login' })
   },
   methods: {
-    handleSubmit() {
+    handleSubmit () {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.error = {}

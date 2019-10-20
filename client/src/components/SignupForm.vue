@@ -70,7 +70,7 @@ export default {
   components: {
     Alert
   },
-  data() {
+  data () {
     return {
       loadingBtn: false,
       error: {
@@ -78,11 +78,11 @@ export default {
       }
     }
   },
-  beforeCreate() {
+  beforeCreate () {
     this.form = this.$form.createForm(this, { name: 'normal_login' })
   },
   methods: {
-    handleSubmit() {
+    handleSubmit () {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.error = {}
@@ -104,7 +104,7 @@ export default {
                 description: err.response.data,
                 type: 'error'
               }
-              //this.$message.error(err.response.data, 3)
+              // this.$message.error(err.response.data, 3)
             })
         }
       })

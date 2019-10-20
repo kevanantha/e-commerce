@@ -22,11 +22,11 @@ export default {
     CardCart,
     Loading
   },
-  data() {
+  data () {
     return {}
   },
   filters: {
-    totalPriceCurrency(value) {
+    totalPriceCurrency (value) {
       return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(value)
     }
   },
@@ -37,7 +37,7 @@ export default {
   methods: {
     ...mapActions('cart', { findAllCarts: 'findAll' })
   },
-  mounted() {
+  mounted () {
     this.findAllCarts()
   }
 }

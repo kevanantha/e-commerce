@@ -69,7 +69,7 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'AdminAddProduct',
-  data() {
+  data () {
     return {
       image: [],
       formItemLayout: {
@@ -79,11 +79,11 @@ export default {
       loadingBtn: false
     }
   },
-  beforeCreate() {
+  beforeCreate () {
     this.form = this.$form.createForm(this, { name: 'validate_other' })
   },
   computed: {
-    isDisabled() {
+    isDisabled () {
       if (this.image.length) return true
       return false
     }
@@ -92,7 +92,7 @@ export default {
     ...mapActions('products', {
       findAllProducts: 'findAll'
     }),
-    handleSubmit() {
+    handleSubmit () {
       this.loadingBtn = true
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -120,13 +120,13 @@ export default {
         }
       })
     },
-    handleRemove(file) {
+    handleRemove (file) {
       const index = this.image.indexOf(file)
       const newImage = this.image.slice()
       newImage.splice(index, 1)
       this.image = newImage
     },
-    beforeUpload(file) {
+    beforeUpload (file) {
       this.image = [file]
       return false
     }

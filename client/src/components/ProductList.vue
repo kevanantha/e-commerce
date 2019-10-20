@@ -36,16 +36,16 @@ export default {
   components: {
     Loading
   },
-  data() {
+  data () {
     return {
       isLoading: false
     }
   },
   filters: {
-    currency(v) {
+    currency (v) {
       return new Intl.NumberFormat('in-ID', { style: 'currency', currency: 'IDR' }).format(v)
     },
-    detailProduct(v) {
+    detailProduct (v) {
       return `/products/${v}`
     }
   },
@@ -57,7 +57,7 @@ export default {
       findAllProducts: 'findAll'
     })
   },
-  mounted() {
+  mounted () {
     this.findAllProducts()
   }
 }

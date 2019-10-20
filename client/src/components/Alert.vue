@@ -7,7 +7,7 @@ export default {
   name: 'Alert',
   props: ['message', 'description', 'type'],
   computed: {
-    descriptionJoin() {
+    descriptionJoin () {
       return this.description.join(', ')
     }
   }

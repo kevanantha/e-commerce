@@ -39,14 +39,14 @@ export default {
     Loading,
     EditForm
   },
-  data() {
+  data () {
     return {
       isLoading: false,
       visible: false
     }
   },
   filters: {
-    descriptionTrancate(v) {
+    descriptionTrancate (v) {
       return truncate(v, 30, { ellipsis: null })
     }
   },
@@ -55,18 +55,18 @@ export default {
       findAllProducts: 'findAll',
       findOne: 'findOne'
     }),
-    showDrawer(id) {
+    showDrawer (id) {
       this.isLoading = true
       this.findOne(id).then(product => {
         this.isLoading = false
         this.visible = true
       })
     },
-    onClose() {
+    onClose () {
       this.visible = false
       this.productId = null
     },
-    deleteProduct(id) {
+    deleteProduct (id) {
       this.$confirm({
         title: 'Are you sure delete this product?',
         content: "You can't undo this action",

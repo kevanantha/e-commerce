@@ -57,7 +57,7 @@ export default {
     Loading,
     AdminProductList
   },
-  data() {
+  data () {
     return {
       collapsed: false
     }
@@ -70,7 +70,7 @@ export default {
       findAllProducts: 'findAll'
     })
   },
-  mounted() {
+  mounted () {
     this.findAllProducts()
   }
 }
